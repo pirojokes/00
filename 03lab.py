@@ -1,12 +1,11 @@
-opt = str(input("A - TOP 5 REPEATING WORDS\nB - ALPHABET SORT\nC - TOP 5 WIDE WORDS\nChoose option - A/B/C: ")).upper()
+top = 5 # top > 0!
+opt = str(input(f"A - TOP {top} REPEATING WORDS (>3 char)\nB - ALPHABET SORT\nC - TOP {top} WIDE WORDS (>3 char)\nChoose option - A/B/C: ")).upper()
 text = str(input("Input text:\n"))
 text = text.split(" ")
-#
-t1, t2, t3, t4 ,t5 = 0, 0, 0, 0, 0
-t = [t1,t2,t3,t4,t5]
-t1name, t2name, t3name, t4name, t5name, = '','','','',''
-tname = [t1name,t2name,t3name,t4name,t5name]
-#
+t, tname = [], []
+for i in range(top):
+    t.append(0)
+    tname.append('')
 for word in text:
     index = text.index(word)
     text[index] = word.lower()
@@ -31,7 +30,7 @@ def top5(filter):
         while(find == False):
             if(count > t[place]):
                 if(t[place] > 0):
-                    cycle = 4-place
+                    cycle = top-place-1
                     nplace = -1
                     while(cycle > 0):
                         t[nplace] = t[nplace-1]
@@ -41,15 +40,15 @@ def top5(filter):
                 t[place] = count
                 tname[place] = word
                 find = True
-            elif(place < 4):
+            elif(place < top-1):
                 place += 1
             else:
                 find = True
     place = 0
-    while(place < 5 and t[place] > 0):
+    while(place < top and t[place] > 0):
         print(f"Top{place+1} = {tname[place]}[{t[place]}]")
         place += 1
-# TOP 5 REPEATING WORDS
+# TOP REPEATING WORDS
 if(opt == "A"):
     top5(text.count)
 # ALPHABET WORD SORT, NO REPEATING
@@ -62,7 +61,7 @@ elif(opt == "B"):
     text2.sort()
     for word in text2:
         print(word)
-# TOP 5 WIDE WORDS
+# TOP WIDE WORDS
 elif(opt == "C"):
     top5(len)
 else:
