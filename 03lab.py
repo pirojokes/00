@@ -1,19 +1,21 @@
-top = 5 # top > 0!
-opt = str(input(f"A - TOP {top} REPEATING WORDS (>3 char)\nB - ALPHABET SORT\nC - TOP {top} WIDE WORDS (>3 char)\nChoose option - A/B/C: ")).upper()
+top = 5     # top > 0!
+minchar = 3 # minchar <= 1 - all
+opt = str(input(f"MINIMUM CHAR IN WORD = {minchar}\nA - TOP {top} REPEATING WORDS\nB - ALPHABET SORT\nC - TOP {top} WIDE WORDS\nChoose option - A/B/C: ")).upper()
 text = str(input("Input text:\n"))
 text = text.split(" ")
 t, tname = [], []
+if(len(text) < top):
+    top = len(text)
 for i in range(top):
     t.append(0)
     tname.append('')
 for word in text:
+    if(word == '' or word == ' '):
+        continue
     index = text.index(word)
     text[index] = word.lower()
-    while(word == '' or word == ' ' or word[0].isalnum() == False or word[-1].isalnum() == False):
-        if(word == '' or word == ' '):
-            text.pop(index)
-            break
-        elif(word[0].isalnum() == False):
+    while(word[0].isalnum() == False or word[-1].isalnum() == False):
+        if(word[0].isalnum() == False):
             word = word[1:].lower()
             text[index] = word
         elif(word[-1].isalnum() == False):
@@ -22,7 +24,7 @@ for word in text:
 # OPT A AND C HAVE SAME CODE
 def top5(filter):
     for word in text:
-        if(word in tname or len(word) <= 3 ):
+        if(word in tname or len(word) < minchar):
             continue
         count = filter(word)
         find = False
@@ -55,7 +57,7 @@ if(opt == "A"):
 elif(opt == "B"):
     text2 = []
     for word in text:
-        if(word in text2 or word[0].isnumeric() == True or len(word) <= 3):
+        if(word in text2 or word[0].isnumeric() == True or len(word) < minchar):
             continue
         text2.append(word)
     text2.sort()
